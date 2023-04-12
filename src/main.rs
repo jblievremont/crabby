@@ -1,8 +1,10 @@
 mod greetings;
 mod chifoumi;
+mod articles;
 
 use greetings::greets;
 use chifoumi::{ play, Game };
+use articles::search_articles;
 
 use clap::{Parser, Subcommand};
 
@@ -35,6 +37,11 @@ enum Commands {
         #[clap(short = 'b', long, value_enum)]
         two: Option<Game>,
     },
+    /// search articles on Hacker News
+    Search {
+        #[clap(short = 'k', long, value_parser)]
+        keyword: String,
+    }
 }
 
 fn main() {
@@ -53,6 +60,14 @@ fn main() {
         },
         Commands::Greets { name } => {
             println!("{}", greets(name));
+        },
+        Commands::Search { keyword } => {
+            let result = search_articles(keyword).unwrap();
+            println!("Found {} results", result.nb_hits);
+            for article in result.hits.iter() {
+                let title = &article.title;
+                println!("* {title}");
+            }
         }
     }
 }
