@@ -42,7 +42,7 @@ mod tests {
             #[test]
             fn $name() {
                 let (a, b, expected) = $value;
-                assert_eq!(expected, play(a, b));
+                assert_eq!(expected, play(&a, &b));
             }
         )*
         }
