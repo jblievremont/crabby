@@ -11,7 +11,7 @@ impl TryFrom<&String> for Game {
   }
 }
 
-#[derive(Debug)]
+#[derive(Debug, clap::ValueEnum, Clone)]
 pub enum Game {
   Rock,
   Paper,
@@ -25,7 +25,7 @@ pub enum GameResult {
   Draw
 }
 
-pub fn play(a: &Game, b: &Game) -> GameResult {
+pub fn play(a: Game, b: Game) -> GameResult {
   match(a, b) {
       (Game::Rock, Game::Rock) | (Game::Paper, Game::Paper) | (Game::Scissors, Game::Scissors) => GameResult::Draw,
       (Game::Rock, Game::Scissors) | (Game::Paper, Game::Rock) | (Game::Scissors, Game::Paper) => GameResult::Win,
@@ -45,7 +45,7 @@ mod tests {
             #[test]
             fn $name() {
                 let (a, b, expected) = $value;
-                assert_eq!(expected, play(&a, &b));
+                assert_eq!(expected, play(a, b));
             }
         )*
         }
